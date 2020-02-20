@@ -3,7 +3,7 @@ const fs = require('fs')
 const inputFilePath = 'a_example.txt';
 
 module.exports = (path = inputFilePath) => {
-  const data = fs.readFileSync(inputFilePath, 'utf8').split('\n');
+  const data = fs.readFileSync(path, 'utf8').split('\n');
   data.pop()
   const [mainInfo, booksScore, ...libDescription] = data;
 
@@ -20,7 +20,9 @@ module.exports = (path = inputFilePath) => {
         books: [],
       })
     } else {
-      acc[acc.length - 1].books = splitAndMapToInt(curr).map((book, index) => ({ id: book, score: BOOKS_SCORE[book ]}))
+      acc[acc.length - 1].books = splitAndMapToInt(curr)
+        .map((book, index) => ({ id: book, score: BOOKS_SCORE[book ]}))
+        .sort((a, b) => b.score - a.score)
     }
     return acc;
   }, []);
