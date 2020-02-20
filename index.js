@@ -44,7 +44,7 @@ while (days) {
       daysToEndScan = currentLib.signUpTime;
       // console.log(JSON.stringify(allLibs, null, 2));
 
-      allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.score).map((book) => book.id), allLibs);
+      allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.booksReadCount).map((book) => book.id), allLibs);
       allLibs = allLibs.filter((lib) => {
         return lib.id !== currentLib.id
       });
