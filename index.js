@@ -1,5 +1,5 @@
 const parser = require('./parser')
-
+const getLibs = require('./getLibs');
 const FILES = [
   './a_example.txt',
   './b_read_on.txt',
@@ -8,3 +8,8 @@ const FILES = [
   './e_so_many_books.txt',
   './f_libraries_of_the_world.txt',
 ];
+
+const a = parser(FILES[0]);
+console.log(a)
+const g = getLibs({ libsDescription: a.LIB_DESCRIPTION, days: a.DAYS_AMOUNT });
+console.log(g)
