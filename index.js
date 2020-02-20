@@ -28,7 +28,7 @@ const getLib = (libs) => {
     }
   }
   for (let i = 0; i < to; i++) {
-    if (libs[i].score > maxCount && Math.abs(libs[i].signUpTime - minSignUp) < 40) {
+    if (libs[i].score < maxCount && maxCount - libs[i].score < 40 && Math.abs(libs[i].signUpTime - minSignUp) < 40) {
       maxCount = libs[i].score;
       index = i;
     }
