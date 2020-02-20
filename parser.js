@@ -15,6 +15,7 @@ module.exports = (path = inputFilePath) => {
     if (index % 2 === 0 || acc.length === 0) {
       const [bookCount, signUpTime, shipPerDay ] = splitAndMapToInt(curr)
       acc.push({
+        id: acc.length,
         signUpTime,
         shipPerDay,
         books: [],

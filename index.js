@@ -1,5 +1,7 @@
 const parser = require('./parser')
 const getLibs = require('./getLibs');
+const getLibsWithUpdatedBooks = require('./getLibsWithUpdatedBooks');
+
 const FILES = [
   './a_example.txt',
   './b_read_on.txt',
@@ -10,6 +12,5 @@ const FILES = [
 ];
 
 const a = parser(FILES[0]);
-console.log(a)
 const g = getLibs({ libsDescription: a.LIB_DESCRIPTION, days: a.DAYS_AMOUNT });
-console.log(g)
+console.log(JSON.stringify(getLibsWithUpdatedBooks([0, 1, 3], a.LIB_DESCRIPTION), null, 2, 2))
