@@ -12,7 +12,7 @@ const FILES = [
   './f_libraries_of_the_world.txt',
 ];
 
-const parsedFile = parser(FILES[3]);
+const parsedFile = parser(FILES[0]);
 let allLibs = parsedFile.LIB_DESCRIPTION;
 let days = parsedFile.DAYS_AMOUNT;
 
@@ -39,14 +39,14 @@ while (days) {
     });
     const currentLib = libsWithMaxRange[0];
     if (currentLib) {
-      console.log(currentLib.books);
       currentLibId = currentLib.id;
       daysToEndScan = currentLib.signUpTime;
       // console.log(JSON.stringify(allLibs, null, 2));
-
-      allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.booksReadCount).map((book) => book.id), allLibs);
+      console.log(currentLib.books.slice(0, currentLib.booksReadCount));
+      allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.booksReadCount).map((book) => book.id), allLibs, currentLibId);
       allLibs = allLibs.filter((lib) => {
-        return lib.id !== currentLib.id
+        libsObject[lib.id].books = lib.books;
+        return lib.id !== currentLib.id && lib.signUpTime < days
       });
     }
   }
@@ -56,7 +56,7 @@ while (days) {
     if (!lib.books.length) {
       return
     }
-
+    // console.log(lib.books);
     lib.scannedBooks = [...lib.scannedBooks, ...lib.books.splice(0, lib.shipPerDay).map((book) => book.id)];
   });
 
