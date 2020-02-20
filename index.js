@@ -12,7 +12,7 @@ const FILES = [
   './f_libraries_of_the_world.txt',
 ];
 
-const parsedFile = parser(FILES[0]);
+const parsedFile = parser(FILES[3]);
 let allLibs = parsedFile.LIB_DESCRIPTION;
 let days = parsedFile.DAYS_AMOUNT;
 
@@ -26,35 +26,29 @@ let currentLibId = null;
 let daysToEndScan = -1;
 
 const scannedLibsId = [];
-console.log(days)
 while (days) {
-  console.log(daysToEndScan, 'days to scan lib')
   if (daysToEndScan <= 0 && currentLibId !== null) {
-    console.log(currentLibId, 'pushed to lbis');
     scannedLibsId.push(currentLibId);
     currentLibId = null;
   }
 
   if (currentLibId === null) {
-    console.log('entered')
     const libsWithMaxRange = getLibs({ libsDescription: allLibs, days });
     libsWithMaxRange.sort((a, b) => {
       return b.score - a.score
     });
-    console.log(libsWithMaxRange, 'libs')
     const currentLib = libsWithMaxRange[0];
-    console.log(currentLib, 'lib!!!')
-    if (!currentLib) {
-      days--
-      continue
-    }
-    currentLibId = currentLib.id;
-    daysToEndScan = currentLib.signUpTime;
+    if (currentLib) {
+      console.log(currentLib.books);
+      currentLibId = currentLib.id;
+      daysToEndScan = currentLib.signUpTime;
+      // console.log(JSON.stringify(allLibs, null, 2));
 
-    allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.score).map((book) => book.id), allLibs);
-    allLibs = allLibs.filter((lib) => {
-      return lib.id !== currentLib.id
-    })
+      allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.score).map((book) => book.id), allLibs);
+      allLibs = allLibs.filter((lib) => {
+        return lib.id !== currentLib.id
+      });
+    }
   }
 
   scannedLibsId.forEach((iterID) => {
@@ -72,14 +66,8 @@ while (days) {
   daysToEndScan--;
 }
 
-console.log(scannedLibsId);
-
 const result = scannedLibsId.map((libId) => {
   return libsObject[libId]
 });
 
-console.log('\n\n\n\n\n\n\n\n--------------------------------------------------------------------------------------')
-console.log(result);
-
-
-saveResults({libsCount: parsedFile.LIB_AMOUNT, libs: result});
+saveResults({libsCount: result.length, libs: result});
