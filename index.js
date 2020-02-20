@@ -12,7 +12,7 @@ const FILES = [
   './f_libraries_of_the_world.txt',
 ];
 
-const parsedFile = parser(FILES[5]);
+const parsedFile = parser(FILES[1]);
 let allLibs = parsedFile.LIB_DESCRIPTION;
 let days = parsedFile.DAYS_AMOUNT;
 
@@ -20,12 +20,14 @@ const getLib = (libs) => {
   let index = 0
   let maxCount = 0;
   let minSignUp = parsedFile.DAYS_AMOUNT;
-  for (let i = 0; i < 20; i++) {
+  const to = 20 > libs.length ? libs.length: 20;
+
+  for (let i = 0; i < to; i++) {
     if (libs[i].signUpTime < minSignUp) {
       minSignUp = libs[i].signUpTime
     }
   }
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < to; i++) {
     if (libs[i].score > maxCount && Math.abs(libs[i].signUpTime - minSignUp) < 40) {
       maxCount = libs[i].score;
       index = i;
