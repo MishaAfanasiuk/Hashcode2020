@@ -1,5 +1,5 @@
 const parser = require('./parser')
-const saveResults = ('./saveResults');
+const saveResults = require('./saveResults');
 const getLibs = require('./getLibs');
 const getLibsWithUpdatedBooks = require('./getLibsWithUpdatedBooks');
 
@@ -50,8 +50,6 @@ while (days) {
     }
     currentLibId = currentLib.id;
     daysToEndScan = currentLib.signUpTime;
-    console.log(daysToEndScan, 'days to end')
-    console.log(daysToEndScan);
 
     allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.score).map((book) => book.id), allLibs);
     allLibs = allLibs.filter((lib) => {
@@ -61,7 +59,6 @@ while (days) {
 
   scannedLibsId.forEach((iterID) => {
     const lib = libsObject[iterID];
-    console.log(libsObject, iterID);
     if (!lib.books.length) {
       return
     }
@@ -85,4 +82,4 @@ console.log('\n\n\n\n\n\n\n\n---------------------------------------------------
 console.log(result);
 
 
-saveResults({libsCount: parsedFile.LIB_AMOUNT, result});
+saveResults({libsCount: parsedFile.LIB_AMOUNT, libs: result});
