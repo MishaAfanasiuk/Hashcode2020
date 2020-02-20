@@ -12,9 +12,27 @@ const FILES = [
   './f_libraries_of_the_world.txt',
 ];
 
-const parsedFile = parser(FILES[0]);
+const parsedFile = parser(FILES[5]);
 let allLibs = parsedFile.LIB_DESCRIPTION;
 let days = parsedFile.DAYS_AMOUNT;
+
+const getLib = (libs) => {
+  let index = 0
+  let maxCount = 0;
+  let minSignUp = parsedFile.DAYS_AMOUNT;
+  for (let i = 0; i < 20; i++) {
+    if (libs[i].signUpTime < minSignUp) {
+      minSignUp = libs[i].signUpTime
+    }
+  }
+  for (let i = 0; i < 20; i++) {
+    if (libs[i].score > maxCount && Math.abs(libs[i].signUpTime - minSignUp) < 40) {
+      maxCount = libs[i].score;
+      index = i;
+    }
+  }
+  return libs[index]
+}
 
 const libsObject = allLibs.reduce((obj, lib) => {
   obj[lib.id] = {...lib, scannedBooks: [], books: [...lib.books]};
@@ -37,12 +55,11 @@ while (days) {
     libsWithMaxRange.sort((a, b) => {
       return b.score - a.score
     });
-    const currentLib = libsWithMaxRange[0];
+    const currentLib = getLib(libsWithMaxRange);
     if (currentLib) {
       currentLibId = currentLib.id;
       daysToEndScan = currentLib.signUpTime;
-      // console.log(JSON.stringify(allLibs, null, 2));
-      console.log(currentLib.books.slice(0, currentLib.booksReadCount));
+
       allLibs = getLibsWithUpdatedBooks(currentLib.books.slice(0, currentLib.booksReadCount).map((book) => book.id), allLibs, currentLibId);
       allLibs = allLibs.filter((lib) => {
         libsObject[lib.id].books = lib.books;
@@ -56,7 +73,6 @@ while (days) {
     if (!lib.books.length) {
       return
     }
-    // console.log(lib.books);
     lib.scannedBooks = [...lib.scannedBooks, ...lib.books.splice(0, lib.shipPerDay).map((book) => book.id)];
   });
 
